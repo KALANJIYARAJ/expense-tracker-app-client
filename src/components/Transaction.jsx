@@ -8,16 +8,16 @@ const List = styled(ListItem)`
 `;
 
 const Transaction = ({ transaction, deleteTransaction }) => {
-  const sign = transaction.amount >= 0 ? "₹" : "-₹";
+  const sign = transaction.amount >= 0 ? "₹" : "₹-";
   const amount = sign + Math.abs(transaction.amount);
   const color = transaction.amount >= 0 ? "#F25252" : "#A68A56";
 
   return (
     <List style={{ background: `${color}`, color: "#fff" }}>
       <ListItemIcon>
-        <DeleteIcon onClick={() => deleteTransaction(transaction.id)} />
+        <DeleteIcon onClick={() => deleteTransaction(transaction._id)} />
       </ListItemIcon>
-      <ListItemText primary={transaction.text} />
+      <ListItemText primary={transaction.title} />
       <ListItemText primary={amount} />
     </List>
   );

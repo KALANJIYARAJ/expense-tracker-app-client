@@ -5,8 +5,14 @@ import ExpenseCard from "../components/ExpenseCard";
 import Transactions from "../components/Transactions";
 import NewTransaction from "../components/NewTransaction";
 import { piggy } from "../utils/piggy";
-import { storageName } from "../utils/APIRoutes";
+import {
+  createTransactionRoute,
+  getTransactionRoute,
+  deleteTransactionRoute,
+  storageName,
+} from "../utils/APIRoutes";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const ExpenseContainer = styled(Box)`
   min-width: 100%;
@@ -72,36 +78,37 @@ const Component = styled(Box)`
 `;
 
 function PiggyTrackers() {
-  const [transactions, setTransactions] = useState([
-    { id: 1, text: "Momos", amount: -20 },
-    { id: 2, text: "Salary", amount: 3000 },
-    { id: 3, text: "Book", amount: -100 },
-    { id: 4, text: "Bonus", amount: 1500 },
-  ]);
+  const [transactions, setTransactions] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoading(true);
-    if (!localStorage.getItem(storageName)) {
-      navigate("/");
+    if (localStorage.getItem(storageName)) {
+      getTransaction();
+    } else {
+      navigate("/login");
     }
     setIsLoading(false);
   }, []);
 
-  const deleteTransaction = (id) => {
-    console.log(id);
-    setTransactions(
-      transactions.filter((transaction) => transaction.id !== id)
+  const getTransaction = async () => {
+    const { data } = await axios.get(
+      `${getTransactionRoute}/63f6532478d019f05c93beb0`
     );
-    console.log(transactions);
+
+    setTransactions(data);
   };
 
-  const addTransaction = (transaction) => {
-    setTransactions((transactions) => [transaction, ...transactions]);
-    console.log(transaction);
-    console.log(transactions);
+  const deleteTransaction = async (id) => {
+    const { data } = await axios.delete(`${deleteTransactionRoute}/${id}`);
+    getTransaction();
+  };
+
+  const addTransaction = async (transaction) => {
+    const { data } = await axios.post(createTransactionRoute, transaction);
+    getTransaction();
   };
 
   return (

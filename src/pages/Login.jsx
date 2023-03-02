@@ -121,8 +121,7 @@ export default function Login() {
         toast.error(data.msg, toastOptions);
       }
       if (data.status === true) {
-        localStorage.setItem(storageName, JSON.stringify(data.user));
-
+        localStorage.setItem(storageName, data.user._id);
         navigate("/");
       }
     }
@@ -153,6 +152,12 @@ export default function Login() {
           <span>
             Don't have an account ? <Link to="/register">Create One.</Link>
           </span>
+          <p style={{ color: "#f25252", fontWeight: "Bold" }}>
+            Username : Test
+          </p>
+          <p style={{ color: "#f25252", fontWeight: "Bold" }}>
+            Password : 12345678
+          </p>
         </form>
       </FormContainer>
       <ToastContainer />

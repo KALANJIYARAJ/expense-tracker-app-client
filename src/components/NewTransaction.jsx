@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Typography, Box, TextField, Button, styled } from "@mui/material";
+import { storageName } from "../utils/APIRoutes";
 
 const Container = styled(Box)`
   display: flex;
@@ -31,11 +32,13 @@ const StyledButton = styled(Button)`
 const NewTransaction = ({ addTransaction }) => {
   const [text, setText] = useState("");
   const [amount, setAmount] = useState("");
+  const userId = localStorage.getItem(storageName);
 
   const incomeTransaction = (e) => {
     const transaction = {
-      id: Math.floor(Math.random() * 100000000),
-      text: text,
+      userId: userId,
+      type: "income",
+      title: text,
       amount: +amount,
     };
     addTransaction(transaction);
@@ -46,8 +49,9 @@ const NewTransaction = ({ addTransaction }) => {
 
   const expenseTransaction = (e) => {
     const transaction = {
-      id: Math.floor(Math.random() * 100000000),
-      text: text,
+      userId: userId,
+      type: "expense",
+      title: text,
       amount: +-amount,
     };
     addTransaction(transaction);
